@@ -105,7 +105,10 @@ class AES:
         # If not the encrypted bytearray is returned.
         returning = not isinstance(plaintext, bytearray)
         if returning:
-            plaintext = bytearray(plaintext)
+            if isinstance(plaintext, str):
+                plaintext = bytearray(plaintext.encode("utf-8"))  # encode string
+            else:
+                plaintext = bytearray(plaintext)  # already bytes
         PKCS7.pad(plaintext, self.block_size)
         self._encryptor.encrypt(plaintext, plaintext)
         if returning:
